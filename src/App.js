@@ -3,6 +3,7 @@ import TodoList from './TodoList';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 import { render } from '@testing-library/react';
+import Axios from 'axios'
 
 const LOCAL_STORAGE_KEY = 'todoApp.todos'
 
@@ -10,14 +11,23 @@ function App() {
   const todoNameRef = useRef()
   const [todos, setTodos] = useState([])
 
-  useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-    if(storedTodos) setTodos(storedTodos)
-  }, [])
+  // useEffect(() => {
+  //   const storedTodos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+  //   console.log(storedTodos); 
+  //   if(storedTodos) setTodos(storedTodos)
+  // }, [])
+
+  // useEffect(() => {
+  //   console.log(todos);
+  //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
+  // }, [todos])
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
-  }, [todos])
+    Axios.get("http://localhost:3001/api/get").then((response) => {
+      console.log(response.data);
+      setTodos(response.data);
+    });
+  }, []);
 
   function toggleTodo(id) {
     const newTodos = [...todos]
@@ -34,6 +44,13 @@ function App() {
       return [...prevTodos, {id: uuidv4(), name: name, complete:false}]
     })
     todoNameRef.current.value = null
+
+    //db call
+    Axios.post("http://localhost:3001/api/insert", {
+      todoname: name
+    }).then(() => {
+      alert("successful insert");
+    });
   }
 
   function handleClearCompletedTodos() {
