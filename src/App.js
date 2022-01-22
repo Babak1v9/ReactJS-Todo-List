@@ -2,7 +2,6 @@ import React, {useState, useRef, useEffect} from 'react';
 import TodoList from './TodoList';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
-import { render } from '@testing-library/react';
 import Axios from 'axios'
 
 const LOCAL_STORAGE_KEY = 'todoApp.todos'
