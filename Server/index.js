@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Hallo1557',
+    password: 'MyPassword123!',
     database: 'reacttodoapp'
 });
 
